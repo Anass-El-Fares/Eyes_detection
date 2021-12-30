@@ -1,7 +1,6 @@
 # --------------- Eyes detection using Deep Learning -----------------
 # ---------------------- El Fares Anass ------------------------------
-# ---------------------- XX/XX/XXXX ----------------------------------
-
+# ---------------------- 30/12/2021 ---------------------------------
 import cv2
 import os
 from keras.models import load_model
@@ -21,8 +20,8 @@ cap = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 count = 0
 det = 0
-rpred = [[1,0]]
-lpred = [[1,0]]
+r_pred = [[1,0]] # right eye
+l_pred = [[1,0]] # left eye
 try:
     sound_1.play()
 except:
@@ -46,10 +45,10 @@ while(True):
         r_eye= r_eye/255
         r_eye= r_eye.reshape(24,24,-1)
         r_eye = np.expand_dims(r_eye,axis=0)
-        rpred = model.predict(r_eye)
-        if(rpred[0][0]>0.8):
+        r_pred = model.predict(r_eye)
+        if(r_pred[0][0]>0.8):
             labels='Open'
-        if(rpred[0][0]<0.2):
+        if(r_pred[0][0]<0.2):
             labels='Closed'
         break
     for (x,y,w,h) in left_eye:
@@ -60,17 +59,17 @@ while(True):
         l_eye = l_eye/255
         l_eye = l_eye.reshape(24,24,-1)
         l_eye = np.expand_dims(l_eye,axis=0)
-        lpred = model.predict(l_eye)
-        if(lpred[0][0]>0.8):
+        l_pred = model.predict(l_eye)
+        if(l_pred[0][0]>0.8):
             labels ='Open'
-        if(lpred[0][0]<0.2):
+        if(l_pred[0][0]<0.2):
             labels = 'Closed'
         break
 
     testo = "Playing 'Girls like you' - Maroon 5"
     cv2.putText(frame, testo, (10, 20), font, 0.7, (100, 0, 100), 1, cv2.LINE_AA)
 
-    if(rpred[0][0]>0.7 and lpred[0][0]>0.7):
+    if(r_pred[0][0]>0.7 and l_pred[0][0]>0.7):
         det = det + 1
         cv2.putText(frame,"Closed",(225,460), font, 1,(20,255,255),1,cv2.LINE_AA)
         print('Occhi CHIUSI !!')
@@ -97,3 +96,4 @@ while(True):
         break
 
 cv2.destroyAllWindows()
+
