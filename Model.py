@@ -31,5 +31,5 @@ model = Sequential([
     Dense(2, activation='softmax')])
 
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
-model.fit_generator(train_batch, validation_data=valid_batch,epochs=20,steps_per_epoch=SPE ,validation_steps=VS)
+model.fit(train_batch, validation_data=valid_batch,epochs=20,steps_per_epoch=SPE ,validation_steps=VS)
 model.save('models/CNN_eye.h5', overwrite=True)
